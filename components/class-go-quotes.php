@@ -117,7 +117,7 @@ class GO_Quotes
 	public function render_quote( $type, $atts, $content )
 	{
 		//bail if no content
-		if ( is_null( $content ) )
+		if ( empty( $content ) )
 		{
 			return;
 		}// end if
@@ -147,30 +147,31 @@ class GO_Quotes
 		if ( 'pullquote' == $type || 'blockquote' == $type )
 		{
 			//set some defaults
-			$wrapped_content               = '<p class="content">' . esc_html( $content ) . '</p>';
 			$attribution_start     = '<footer><cite>';
 			$attribution_end       = '</cite></footer>';
-			$wrapper_start         = '';
+			$wrapped_content       = '<p class="content">' . esc_html( $content ) . '</p>';
 			$wrapper_end           = '';
+			$wrapper_start         = '';
 
 			switch ( $type )
 			{
 				case 'pullquote':
-					$quote_block_start     = '<aside class="pullquote" id="quote-' . absint( ++$this->quote_id ) . '">';
 					$quote_block_end       = '</aside>';
-					$wrapper_start         = '<div class="boxed">';
+					$quote_block_start     = '<aside class="pullquote" id="quote-' . absint( ++$this->quote_id ) . '">';
 					$wrapper_end           = '</div>';
+					$wrapper_start         = '<div class="boxed">';
 					break;
 
 				case 'blockquote':
-					$quote_block_start     = '<blockquote id="quote-' . absint( ++$this->quote_id ) . '">';
 					$quote_block_end       = '</blockquote>';
+					$quote_block_start     = '<blockquote id="quote-' . absint( ++$this->quote_id ) . '">';
+					$wrapped_content       = '<p class="content">"' . esc_html( $content ) . '"</p>';
 					break;
 
 				default:
+					$quote_block_end       = '</q>';
 					$quote_block_start     = '<q id="quote-' . absint( ++$this->quote_id );
 					$wrapped_content       = esc_html( $content );
-					$quote_block_end       = '</q>';
 					break;
 			}//end switch
 
@@ -242,7 +243,7 @@ class GO_Quotes
 	 * @param string $content - the actual quote content
 	 * @return string
 	 */
-	public function pullquote_shortcode( $atts, $content )
+	public function pullquote_shortcode( $atts, $content = NULL )
 	{
 		return $this->render_quote( 'pullquote', $atts, $content );
 	}// end pullquote_shortcode
