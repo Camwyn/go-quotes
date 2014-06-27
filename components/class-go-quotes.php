@@ -298,7 +298,7 @@ class GO_Quotes
 
 
 /**
- * GO_Alerts Singleton
+ * GO_Quotes Singleton
  */
 function go_quotes()
 {
